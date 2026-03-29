@@ -1,6 +1,6 @@
 # snip — URL Shortener API
 
-A REST API for creating and managing short URLs, built with Node.js, Express, and MySQL.
+A REST API for creating and managing short URLs, built with Node.js, Express, and MySQL. From 'Roadmap.sh': https://roadmap.sh/projects/url-shortening-service
 
 ## Requirements
 
