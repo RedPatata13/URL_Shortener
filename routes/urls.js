@@ -61,6 +61,11 @@ router.get('/:shorten', async (req, res, next) => {
     );
     if (!row) return res.status(404).json({ error: 'Short URL not found' });
 
+    await execute(
+      'UPDATE urls SET access_count = access_count + 1 WHERE short_url = ?',
+      [req.params.shorten]
+    );
+
     res.json(formatRow(row));
   } catch (err) { next(err); }
 });
@@ -73,7 +78,7 @@ router.put('/:shorten', async (req, res, next) => {
     if (!isValidUrl(url)) return res.status(400).json({ error: 'url must be a valid http/https URL' });
 
     const existing = await queryOne(
-      'SELECT id FROM urls WHERE short_url = ?',
+      'SELECT short_url FROM urls WHERE short_url = ?',
       [req.params.shorten]
     );
     if (!existing) return res.status(404).json({ error: 'Short URL not found' });
