@@ -39,6 +39,16 @@ router.post('/', async (req, res, next) => {
     res.status(201).json(formatRow(row));
   } catch (err) { next(err); }
 });
+
+// GET /shorten  (get all URLs)
+router.get('/', async (req, res, next) => {
+  try {
+    const rows = await execute('SELECT * FROM urls ORDER BY created_at DESC');
+    res.json(rows.map(formatRow));
+  } catch (err) {
+    next(err);
+  }
+});
 // GET /shorten/:shorten/stats  — must be before /:shorten
 router.get('/:shorten/stats', async (req, res, next) => {
   try {
@@ -66,10 +76,11 @@ router.get('/:shorten', async (req, res, next) => {
       [req.params.shorten]
     );
 
-    res.json(formatRow(row));
+    // res.json(formatRow(row));
+    res.status(300);
+    res.redirect(row.url);
   } catch (err) { next(err); }
 });
-
 // PUT /shorten/:shorten
 router.put('/:shorten', async (req, res, next) => {
   try {
